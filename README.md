@@ -3,4 +3,7 @@ Project for evening school
 ## Technologies
 - Node.js
 - Express.js
-- Jest
+- Docker
+## Libraries
+- Jestjs
+- dotenv
