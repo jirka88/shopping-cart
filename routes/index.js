@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 const shoppingController = require('./../controllers/shoppingItemController')
 
-router.get('/', shoppingController.list);
-router.post('/create', shoppingController.create)
+router.get('/list', shoppingController.list);
+router.get('/list/:slug', shoppingController.getItem)
+router.post('/create', shoppingController.createItem);
+router.put('/update/:slug', shoppingController.updateItem);
+router.delete('/delete', shoppingController.deleteItem)
 
 module.exports = router;

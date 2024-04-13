@@ -7,3 +7,4 @@ Project for evening school
 ## Libraries
 - Jestjs
 - dotenv
+- mongoose-slug-plugin
