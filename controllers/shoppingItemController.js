@@ -1,22 +1,24 @@
 const item = require("./../models/item-model")
-
+const Filter = require("../components/filter");
 /**
  * Získá všechny produkty
  * @param req
  * @param res
  * @returns {Promise<void>}
  */
-const list = async(req, res) => {
+const list = async (req, res) => {
     try {
-        const _items = await item.find({});
-        if(_items.length === 0) {
-            res.send({ message: 'Žádný produkt není vložený!'})
-        }
-        else {
+        const filter = new Filter();
+        const query = filter.getQuery(req);
+        const _items = await item.find(query);
+
+        if (_items.length === 0) {
+            res.send({message: 'Žádný produkt nebyl nalezen!'})
+        } else {
             res.send(_items);
         }
     } catch (err) {
-        res.status(500).send({ message: err});
+        res.status(500).send({message: err});
     }
 }
 /**
@@ -25,18 +27,17 @@ const list = async(req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const getItem = async(req, res) => {
+const getItem = async (req, res) => {
     try {
-        const {slug} = req.params
+        const slug = req.params;
         const _item = await item.findOne({slug: slug});
-        if(_item) {
+        if (_item) {
             res.send(_item);
-        }
-        else {
-            res.send({message: "Produkt nebyl nalezen :("})
+        } else {
+            res.status(404).send({message: "Produkt nebyl nalezen :("})
         }
     } catch (err) {
-        res.status(500).send({ message: err.errors });
+        res.status(500).send({message: err.errors});
     }
 }
 /**
@@ -45,13 +46,13 @@ const getItem = async(req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const createItem = async(req, res) => {
+const createItem = async (req, res) => {
     try {
         const {content, count, state} = req.body
         const _item = await item.create({content, count, state});
         res.send(_item);
     } catch (err) {
-        res.status(500).send({ message: err.errors });
+        res.status(500).send({message: err.errors});
     }
 }
 /**
@@ -60,8 +61,21 @@ const createItem = async(req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const updateItem = async(req, res) => {
-
+const updateItem = async (req, res) => {
+    try {
+        const {content, count, state} = req.body;
+        const _item = await item.findOneAndUpdate(
+            {slug: req.params.slug},
+            {content: content, count: count, state: state},
+            {new: true})
+        if (_item) {
+            res.send(_item);
+        } else {
+            res.status(404).send({message: 'Produkt nebyl nalezen!'})
+        }
+    } catch (err) {
+        res.status(500).send({message: err.errors})
+    }
 }
 /**
  * Vymaže produkt
@@ -69,8 +83,13 @@ const updateItem = async(req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const deleteItem = async(req, res) => {
-
+const deleteItem = async (req, res) => {
+    try {
+        const _item = await item.deleteOne({slug: req.params.slug});
+        res.send({message: "Produkt byl úspěšně vymazán!"});
+    } catch (err) {
+        res.status(500).send({message: err.errors})
+    }
 }
 module.exports = {
     list, createItem, updateItem, deleteItem, getItem

@@ -6,6 +6,6 @@ router.get('/list', shoppingController.list);
 router.get('/list/:slug', shoppingController.getItem)
 router.post('/create', shoppingController.createItem);
 router.put('/update/:slug', shoppingController.updateItem);
-router.delete('/delete', shoppingController.deleteItem)
+router.delete('/delete/:slug', shoppingController.deleteItem)
 
 module.exports = router;
