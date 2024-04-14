@@ -23,7 +23,7 @@ const itemSchema = mongoose.Schema(
         state: {
             type: String,
             required: [true, "Zadejte možný stav!"],
-            enum: ["complete", "incomplete", "none"]
+            enum: ["COMPLETE", "RESERVED", "SOLD_OUT"]
         },
     },
     {

@@ -1,5 +1,5 @@
 const item = require("./../models/item-model")
-const Filter = require("../components/filter");
+const Filter = require("../components/Filter");
 /**
  * Získá všechny produkty
  * @param req
@@ -29,7 +29,7 @@ const list = async (req, res) => {
  */
 const getItem = async (req, res) => {
     try {
-        const slug = req.params;
+        const slug = req.params.slug;
         const _item = await item.findOne({slug: slug});
         if (_item) {
             res.send(_item);
