@@ -37,7 +37,7 @@ const getItem = async (req, res) => {
             res.status(404).send({message: "Produkt nebyl nalezen :("})
         }
     } catch (err) {
-        res.status(500).send({message: err.errors});
+        res.status(400).send({message: err.errors});
     }
 }
 /**
@@ -52,7 +52,7 @@ const createItem = async (req, res) => {
         const _item = await item.create({content, count, state});
         res.send(_item);
     } catch (err) {
-        res.status(500).send({message: err.errors});
+        res.status(400).send({message: err.errors});
     }
 }
 /**
@@ -74,7 +74,7 @@ const updateItem = async (req, res) => {
             res.status(404).send({message: 'Produkt nebyl nalezen!'})
         }
     } catch (err) {
-        res.status(500).send({message: err.errors})
+        res.status(400).send({message: err.errors})
     }
 }
 /**
@@ -88,7 +88,7 @@ const deleteItem = async (req, res) => {
         const _item = await item.deleteOne({slug: req.params.slug});
         res.send({message: "Produkt byl úspěšně vymazán!"});
     } catch (err) {
-        res.status(500).send({message: err.errors})
+        res.status(400).send({message: err.errors})
     }
 }
 module.exports = {

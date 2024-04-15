@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jest --forceExit"
+    "test": "jest --runInBand --detectOpenHandles"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -13,6 +16,7 @@
     "dotenv": "^16.4.5",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "mongodb-memory-server": "^9.1.8",
     "mongoose": "^8.3.1",
     "mongoose-slug-updater": "^3.3.0",
     "morgan": "~1.9.1",

@@ -14,6 +14,8 @@ services:
       - mongo-database
 
   mongo-express:
+    depends_on:
+      - mongo
     image: mongo-express
     restart: always
     ports:

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var slug = require('mongoose-slug-updater');
+mongoose.set('runValidators', true)
 mongoose.plugin(slug);
 
 const Schema = mongoose.Schema;
@@ -17,8 +18,8 @@ const itemSchema = mongoose.Schema(
         },
         count: {
             type: Number,
-            default: 0,
-            min: [0, 'Počet kusů nesmí být záporný!']
+            default: 1,
+            min: [1, 'Počet kusů nesmí být záporný ani nula!']
         },
         state: {
             type: String,
