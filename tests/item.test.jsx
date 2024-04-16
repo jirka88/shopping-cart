@@ -15,7 +15,38 @@ afterAll(async () => {
 afterEach(async () => {
     await dropCollections();
 });
+describe("Getting product", () => {
+    test("Return list of products", async () => {
+        for(let i = 0; i < faker.number.int({min: 2, max: 20}); i++) {
+            const product = generateRandomItem()
+            await setItem(product);
+        }
+        const response = await request(app).get(`/shoppingitem/list`)
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0);
+    });
+    test("Return list without products", async () => {
+        const response = await request(app).get(`/shoppingitem/list`)
+        expect(response.status).toBe(404);
+    });
 
+    test("Return product", async () => {
+        const product = generateRandomItem()
+        const item = await setItem(product);
+        const response = await request(app).get(`/shoppingitem/list/${item.slug}`)
+        expect(response.status).toBe(200);
+
+        expect(response.body.state).toEqual(item.state);
+        expect(response.body.content).toEqual(item.content);
+        expect(response.body.count).toEqual(item.count);
+        expect(response.body.slug).toEqual(item.slug);
+
+    });
+    test("Return product not found", async () => {
+        const response = await request(app).get(`/shoppingitem/list/${faker.lorem.word()}`)
+        expect(response.status).toBe(404);
+    });
+})
 describe("Creating product", () => {
     test("Should be able to create a product", async () => {
         const product = generateRandomItem()
@@ -54,7 +85,7 @@ describe("Creating product", () => {
         const item = await getItem(response.body.slug)
         expect(item).toBeNull();
     });
-})
+});
 describe("Updating product", () => {
     test("Updating product", async () => {
         const product = generateRandomItem()

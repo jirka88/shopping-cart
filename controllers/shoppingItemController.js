@@ -11,14 +11,13 @@ const list = async (req, res) => {
         const filter = new Filter();
         const query = filter.getQuery(req);
         const _items = await item.find(query);
-
         if (_items.length === 0) {
-            res.send({message: 'Žádný produkt nebyl nalezen!'})
+            res.status(404).send({message: 'Žádný produkt nebyl nalezen!'})
         } else {
             res.send(_items);
         }
     } catch (err) {
-        res.status(500).send({message: err});
+        res.status(400).send({message: err});
     }
 }
 /**
@@ -52,7 +51,6 @@ const createItem = async (req, res) => {
         const _item = await item.create({content, count, state});
         res.send(_item);
     } catch (err) {
-        console.log(err)
         res.status(400).send({message: err.errors});
     }
 }
