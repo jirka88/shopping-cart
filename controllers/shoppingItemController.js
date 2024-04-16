@@ -52,6 +52,7 @@ const createItem = async (req, res) => {
         const _item = await item.create({content, count, state});
         res.send(_item);
     } catch (err) {
+        console.log(err)
         res.status(400).send({message: err.errors});
     }
 }
@@ -85,7 +86,7 @@ const updateItem = async (req, res) => {
  */
 const deleteItem = async (req, res) => {
     try {
-        const _item = await item.deleteOne({slug: req.params.slug});
+        await item.deleteOne({slug: req.params.slug});
         res.send({message: "Produkt byl úspěšně vymazán!"});
     } catch (err) {
         res.status(400).send({message: err.errors})

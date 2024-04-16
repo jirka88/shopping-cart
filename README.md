@@ -9,3 +9,4 @@ Project for evening school
 - dotenv
 - mongoose
 - mongoose-slug-updater
+- faker-js/faker

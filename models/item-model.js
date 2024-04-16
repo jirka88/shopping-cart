@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 var slug = require('mongoose-slug-updater');
 mongoose.set('runValidators', true)
 mongoose.plugin(slug);
+const states = require('./../enum/stateEnum');
 
 const Schema = mongoose.Schema;
 const itemSchema = mongoose.Schema(
@@ -24,7 +25,7 @@ const itemSchema = mongoose.Schema(
         state: {
             type: String,
             required: [true, "Zadejte možný stav!"],
-            enum: ["COMPLETE", "RESERVED", "SOLD_OUT"]
+            enum: states
         },
     },
     {
