@@ -1,4 +1,4 @@
-# shopping-cart
+# shopping-list
 Project for evening school 
 ## Technologies
 - Node.js
