@@ -24,10 +24,13 @@ describe("Getting product", () => {
         const response = await request(app).get(`/shoppingitem/list`)
         expect(response.status).toBe(200);
         expect(response.body.length).toBeGreaterThan(0);
+        expect(response.body.message).toBeUndefined();
     });
     test("Return list without products", async () => {
         const response = await request(app).get(`/shoppingitem/list`)
         expect(response.status).toBe(404);
+        console.log(response.body.message)
+        expect(response.body.message).not.toBeUndefined();
     });
 
     test("Return product", async () => {
@@ -45,6 +48,7 @@ describe("Getting product", () => {
     test("Return product not found", async () => {
         const response = await request(app).get(`/shoppingitem/list/${faker.lorem.word()}`)
         expect(response.status).toBe(404);
+        expect(response.body.message).not.toBeUndefined();
     });
 })
 describe("Creating product", () => {
@@ -66,12 +70,14 @@ describe("Creating product", () => {
         product.content = '';
         const response = await request(app).post("/shoppingitem/create").send(product);
         expect(response.status).toBe(400);
+        expect(response.body.message).not.toBeUndefined();
     });
     test("Creating product with wrong state", async () => {
         const product = generateRandomItem()
         product.state = faker.lorem.word()
         const response = await request(app).post("/shoppingitem/create").send(product);
         expect(response.status).toBe(400);
+        expect(response.body.message).not.toBeUndefined();
 
         const item = await getItem(response.body.slug)
         expect(item).toBeNull();
@@ -81,6 +87,7 @@ describe("Creating product", () => {
         product.count = faker.number.int({max: 0});
         const response = await request(app).post("/shoppingitem/create").send(product);
         expect(response.status).toBe(400);
+        expect(response.body.message).not.toBeUndefined();
 
         const item = await getItem(response.body.slug)
         expect(item).toBeNull();
@@ -140,5 +147,29 @@ describe("Updating product", () => {
         expect(newItem).toBeNull();
 
     });
+    test("Updating non existed product", async () => {
+        const product = generateRandomItem()
+        const response = await request(app).put(`/shoppingitem/update/${faker.lorem.slug()}`).send(product);
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).not.toBeUndefined();
+    });
 });
+describe("Deleting product", () => {
+    test("Deleting product successfully", async() =>{
+        const product = generateRandomItem()
+        const item = await setItem(product);
+        const response = await request(app).delete(`/shoppingitem/delete/${item.slug}`);
+        expect(response.status).toBe(200);
+
+        const newItem = await getItem(item.slug)
+        expect(newItem).toBeNull();
+        expect(response.body.message).not.toBeUndefined();
+    });
+    test("Deleteting non-existing product", async() =>{
+        const response = await request(app).delete(`/shoppingitem/delete/${faker.lorem.slug()}`);
+        expect(response.status).toBe(404);
+        expect(response.body.message).not.toBeUndefined();
+    })
+})
 

@@ -84,8 +84,12 @@ const updateItem = async (req, res) => {
  */
 const deleteItem = async (req, res) => {
     try {
-        await item.deleteOne({slug: req.params.slug});
-        res.send({message: "Produkt byl úspěšně vymazán!"});
+        const _item = await item.findOneAndDelete({slug: req.params.slug});
+        if (_item === null) {
+            res.status(404).send({message: "Položka nebyla nalezena."});
+        } else {
+            res.send({message: "Produkt byl úspěšně vymazán!"});
+        }
     } catch (err) {
         res.status(400).send({message: err.errors})
     }
