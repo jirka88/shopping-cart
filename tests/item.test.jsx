@@ -26,10 +26,20 @@ describe("Getting product", () => {
         expect(response.body.length).toBeGreaterThan(0);
         expect(response.body.message).toBeUndefined();
     });
+    test("Return list of products with content parametr - content", async () => {
+        let item;
+        for(let i = 0; i < faker.number.int({min: 2, max: 20}); i++) {
+            const product = generateRandomItem()
+            item = await setItem(product);
+        }
+        const response = await request(app).get(`/shoppingitem/list`)
+            .query({ content: item.slug });
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBeUndefined();
+    });
     test("Return list without products", async () => {
         const response = await request(app).get(`/shoppingitem/list`)
         expect(response.status).toBe(404);
-        console.log(response.body.message)
         expect(response.body.message).not.toBeUndefined();
     });
 
@@ -170,6 +180,6 @@ describe("Deleting product", () => {
         const response = await request(app).delete(`/shoppingitem/delete/${faker.lorem.slug()}`);
         expect(response.status).toBe(404);
         expect(response.body.message).not.toBeUndefined();
-    })
+    });
 })
 
