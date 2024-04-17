@@ -66,6 +66,7 @@ describe("Creating product", () => {
         const product = generateRandomItem()
         const response = await request(app).post("/shoppingitem/create").send(product);
         expect(response.status).toBe(200);
+        expect(response.body.message).toBeUndefined();
 
         const item = await getItem(response.body.slug)
         expect(item).not.toBeNull();

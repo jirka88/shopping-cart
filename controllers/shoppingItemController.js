@@ -86,7 +86,7 @@ const deleteItem = async (req, res) => {
     try {
         const _item = await item.findOneAndDelete({slug: req.params.slug});
         if (_item === null) {
-            res.status(404).send({message: "Položka nebyla nalezena."});
+            res.status(404).send({message: "Položka nebyla nalezena!"});
         } else {
             res.send({message: "Produkt byl úspěšně vymazán!"});
         }
