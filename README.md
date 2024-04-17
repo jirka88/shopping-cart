@@ -9,4 +9,6 @@ Project for evening school
 - dotenv
 - mongoose
 - mongoose-slug-updater
+- mongodb-memory-server
+- supertest
 - faker-js/faker
