@@ -15,7 +15,7 @@ afterAll(async () => {
 afterEach(async () => {
     await dropCollections();
 });
-describe("Getting product", () => {
+describe("Getting product /shoppingitem/list", () => {
     test("Return list of products", async () => {
         for(let i = 0; i < faker.number.int({min: 2, max: 20}); i++) {
             const product = generateRandomItem()
@@ -26,14 +26,14 @@ describe("Getting product", () => {
         expect(response.body.length).toBeGreaterThan(0);
         expect(response.body.message).toBeUndefined();
     });
-    test("Return list of products with content parametr - content", async () => {
-        let item;
+    test("Return list of products with content parametr", async () => {
+        let item = [];
         for(let i = 0; i < faker.number.int({min: 2, max: 20}); i++) {
             const product = generateRandomItem()
-            item = await setItem(product);
+            item += await setItem(product);
         }
         const response = await request(app).get(`/shoppingitem/list`)
-            .query({ content: item.slug });
+            .query({ content: item[faker.number.int({min: 0, max: item.length})].slug});
         expect(response.status).toBe(200);
         expect(response.body.message).toBeUndefined();
     });
@@ -61,7 +61,7 @@ describe("Getting product", () => {
         expect(response.body.message).not.toBeUndefined();
     });
 })
-describe("Creating product", () => {
+describe("Creating product /shoppingitem/create", () => {
     test("Should be able to create a product", async () => {
         const product = generateRandomItem()
         const response = await request(app).post("/shoppingitem/create").send(product);
@@ -104,7 +104,7 @@ describe("Creating product", () => {
         expect(item).toBeNull();
     });
 });
-describe("Updating product", () => {
+describe("Updating product /shoppingitem/update", () => {
     test("Updating product", async () => {
         const product = generateRandomItem()
         const item = await setItem(product);
@@ -166,7 +166,7 @@ describe("Updating product", () => {
         expect(response.body.message).not.toBeUndefined();
     });
 });
-describe("Deleting product", () => {
+describe("Deleting product /shoppingitem/delete", () => {
     test("Deleting product successfully", async() =>{
         const product = generateRandomItem()
         const item = await setItem(product);
