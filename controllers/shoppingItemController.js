@@ -17,7 +17,7 @@ const list = async (req, res) => {
             res.send(_items);
         }
     } catch (err) {
-        res.status(400).send({message: err});
+        res.status(500).send({message: err});
     }
 }
 /**
@@ -47,6 +47,7 @@ const getItem = async (req, res) => {
  */
 const createItem = async (req, res) => {
     try {
+        req.body.state = req.body.state.toUpperCase();
         const {content, count, state} = req.body
         const _item = await item.create({content, count, state});
         res.send(_item);
