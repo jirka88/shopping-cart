@@ -71,9 +71,10 @@ describe("Creating product /shoppingitem/create", () => {
         const item = await getItem(response.body.slug)
         expect(item).not.toBeNull();
 
-        expect(item).toHaveProperty("state", product.state);
-        expect(item).toHaveProperty("content", product.content);
-        expect(item).toHaveProperty("count", product.count);
+        expect(item).toHaveProperty("state", response.body.state);
+        expect(item).toHaveProperty("content", response.body.content);
+        expect(item).toHaveProperty("count", response.body.count);
+        expect(item).toHaveProperty("slug", response.body.slug);
 
     });
     test("Creating product without content", async () => {
