@@ -6,10 +6,10 @@ class Filter {
         const dateTo = req.query.dateTo ? new Date(req.query.dateTo) : null;
         this.query = {};
 
-        if (states?.length > 0) {
+        if (states) {
             this.query.state = {$in: states};
         }
-        if (content?.length > 0) {
+        if (content) {
             this.query.slug = {$in: content}
         }
         if (dateFrom || dateTo) {

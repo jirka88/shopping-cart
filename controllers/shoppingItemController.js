@@ -63,10 +63,11 @@ const createItem = async (req, res) => {
  */
 const updateItem = async (req, res) => {
     try {
+        req.body.state = req.body.state.toUpperCase();
         const {content, count, state} = req.body;
         const _item = await item.findOneAndUpdate(
             {slug: req.params.slug},
-            {content: content, count: count, state: state},
+            {$set: {content: content, count: count, state: state}},
             {new: true})
         if (_item) {
             res.send(_item);
