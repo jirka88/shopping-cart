@@ -36,7 +36,7 @@ const getItem = async (req, res) => {
             res.status(404).send({message: "Produkt nebyl nalezen :("})
         }
     } catch (err) {
-        res.status(400).send({message: err.errors});
+        res.status(500).send({message: err.errors});
     }
 }
 /**
@@ -92,7 +92,7 @@ const deleteItem = async (req, res) => {
             res.send({message: "Produkt byl úspěšně vymazán!"});
         }
     } catch (err) {
-        res.status(400).send({message: err.errors})
+        res.status(500).send({message: err.errors})
     }
 }
 module.exports = {
