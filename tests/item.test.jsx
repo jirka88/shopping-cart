@@ -39,7 +39,7 @@ describe("Getting product /shoppingitem/list", () => {
     });
     test("Return list without products", async () => {
         const response = await request(app).get(`/shoppingitem/list`)
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
         expect(response.body.message).not.toBeUndefined();
     });
 
@@ -57,7 +57,7 @@ describe("Getting product /shoppingitem/list", () => {
     });
     test("Return product not found", async () => {
         const response = await request(app).get(`/shoppingitem/list/${faker.lorem.word()}`)
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
         expect(response.body.message).not.toBeUndefined();
     });
 })
@@ -163,7 +163,7 @@ describe("Updating product /shoppingitem/update", () => {
         const product = generateRandomItem()
         const response = await request(app).put(`/shoppingitem/update/${faker.lorem.slug()}`).send(product);
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
         expect(response.body.message).not.toBeUndefined();
     });
 });
@@ -180,7 +180,7 @@ describe("Deleting product /shoppingitem/delete", () => {
     });
     test("Deleteting non-existing product", async() =>{
         const response = await request(app).delete(`/shoppingitem/delete/${faker.lorem.slug()}`);
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
         expect(response.body.message).not.toBeUndefined();
     });
 })
