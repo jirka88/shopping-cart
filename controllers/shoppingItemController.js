@@ -12,7 +12,7 @@ const list = async (req, res) => {
         const query = filter.getQuery(req);
         const _items = await item.find(query);
         if (_items.length === 0) {
-            res.status(404).send({message: 'Žádný produkt nebyl nalezen!'})
+            res.status(400).send({message: 'Žádný produkt nebyl nalezen!'})
         } else {
             res.send(_items);
         }
@@ -33,7 +33,7 @@ const getItem = async (req, res) => {
         if (_item) {
             res.send(_item);
         } else {
-            res.status(404).send({message: "Produkt nebyl nalezen :("})
+            res.status(400).send({message: "Produkt nebyl nalezen :("})
         }
     } catch (err) {
         res.status(500).send({message: err.errors});
@@ -72,7 +72,7 @@ const updateItem = async (req, res) => {
         if (_item) {
             res.send(_item);
         } else {
-            res.status(404).send({message: 'Produkt nebyl nalezen!'})
+            res.status(400).send({message: 'Produkt nebyl nalezen!'})
         }
     } catch (err) {
         res.status(400).send({message: err.errors})
@@ -88,12 +88,12 @@ const deleteItem = async (req, res) => {
     try {
         const _item = await item.findOneAndDelete({slug: req.params.slug});
         if (_item === null) {
-            res.status(404).send({message: "Položka nebyla nalezena!"});
+            res.status(400).send({message: "Položka nebyla nalezena!"});
         } else {
             res.send({message: "Produkt byl úspěšně vymazán!"});
         }
     } catch (err) {
-        res.status(500).send({message: err.errors})
+        res.status(500).send({message: err.errors});
     }
 }
 module.exports = {
